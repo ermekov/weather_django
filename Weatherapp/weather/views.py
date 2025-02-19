@@ -7,9 +7,12 @@ def index(request):
     key = 'cced0bc6133666f728728356fda52d60'
     url = 'https://api.openweathermap.org/data/2.5/weather?q={}&units=metric&appid='+key
 
-    if(request.method == "POST"):
+    if request.method == "POST":
         form = CityForm(request.POST)
-        form.save()
+        if form.is_valid():
+            city_name = form.cleaned_data['name']
+            if not City.objects.filter(name=city_name).exists():
+                form.save()
 
     form = CityForm()
 
